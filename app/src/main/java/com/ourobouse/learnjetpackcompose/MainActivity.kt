@@ -51,7 +51,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun MainSurface(){
@@ -65,43 +64,36 @@ fun MainSurface(){
                 .fillMaxWidth()
                 .padding(20.dp)
             ) {
-           Row(horizontalArrangement = Arrangement.SpaceEvenly) {
+           Row(horizontalArrangement = Arrangement.Start) {
                Column (verticalArrangement = Arrangement.Center,
                modifier = Modifier.padding(20.dp)){
-                   Text(text = "Connection Status: ",
+                   Text(text = if (!connectStatus.value) "Disconnected" else "Connected",
                    Modifier.padding(15.dp))
-                   Text(text = "Authentication Type: ",
+                   Text(text = "Type:  ${if (!connectStatus.value) "-" else null/*TODO else*/}",
                        Modifier.padding(15.dp))
                    Text(text = "User: ",
                    Modifier.padding(15.dp))
 
                    }
-               Column() {
-                   Image(painter = if (connectStatus.value) painterResource(id = R.drawable.ic_baseline_check_circle_24)
-                   else painterResource(id = R.drawable.ic_baseline_highlight_off_24),
-                       contentDescription = "No connected",
-                       modifier = Modifier
-                           .size(width = 180.dp, height = 180.dp)
-                           .padding(20.dp))
+               Column(verticalArrangement = Arrangement.SpaceAround) {
+                   OutlinedButton(onClick = { connectStatus.value = !connectStatus.value},
+                   modifier = Modifier.size(width = 180.dp, height = 180.dp)) {
+                       Image(painter = if (connectStatus.value) painterResource(id = R.drawable.ic_baseline_check_circle_24)
+                       else painterResource(id = R.drawable.ic_baseline_highlight_off_24),
+                           contentDescription = "No connected",
 
+                           modifier = Modifier
+                               .size(width = 120.dp, height = 120.dp)
+                               )
 
-               }
-
-
+                   }
                }
 
            }
 
+        }
+}
 
-
-
-
-
-            }
-
-
-
-/*
 data class QQleaks(val phone: String, val QQ: String)
 data class Weiboleaks(val Phone: String, val uid: String)
 
@@ -121,4 +113,3 @@ class MongoDB(val dbAdress: String,
     }
 }
 
- */
