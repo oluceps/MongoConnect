@@ -12,10 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -116,7 +113,10 @@ fun InquireCard(){
         .fillMaxWidth()
         .padding(20.dp)
         .height(120.dp)) {
-        Text(text = "test", modifier = Modifier.fillMaxSize())
+        Row {
+            MongoDB("","","","").qqInputQuery()
+
+        }
 
     }
 }
@@ -137,6 +137,25 @@ class MongoDB(val dbAdress: String,
         val database = client.getDatabase(dbName) //normal java driver usage
         val colQQleaks = database.getCollection<QQleaks>() //KMongo extension method
         val colWeiboLeaks = database.getCollection<Weiboleaks>()
+    }
+
+
+    @Composable
+    fun qqInputQuery(){
+        Column() {
+            var phone by remember{
+                mutableStateOf("")
+            }
+            var QQ by remember {
+                mutableStateOf("")
+            }
+
+            OutlinedTextField(value = phone, onValueChange = {phone = it}, label = { Text(text = "Phone Number")})
+            OutlinedTextField(value = QQ, onValueChange = {QQ = it}, label = {Text(text = "QQ Number")})
+
+        }
+
+
     }
 
 
