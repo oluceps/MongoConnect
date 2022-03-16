@@ -72,38 +72,38 @@ fun MainSurface(){
                modifier = Modifier
                    .padding(20.dp)
                    .defaultMinSize(minWidth = 140.dp)){
-                   fun textCon(status: Boolean) {
-                       if (!status) return "Disconnected"
-                       else "Connected"
+                   fun textCon(status: Boolean): String {
+                       return if (!status) "Disconnected" else "Connected"
                    }
 
 
-                   Text(text = if (!connectStatus.value) "Disconnected" else "Connected",
+                   Text(text = textCon(connectStatus.value), Modifier.padding(15.dp)
+                   )
 
-                   Modifier.padding(15.dp))
                    Text(text = "Type:  ${if (!connectStatus.value) "-" else null/*TODO else*/}",
-                       Modifier.padding(15.dp))
+                       Modifier.padding(15.dp)
+                   )
+
                    Text(text = "User: ",
                    Modifier.padding(15.dp))
-
                    }
-               Column(verticalArrangement = Arrangement.SpaceAround) {
+
+               Column(verticalArrangement = Arrangement.SpaceAround){
+
                    Spacer(modifier = Modifier.height(6.dp))
+
                    OutlinedButton(onClick = { connectStatus.value = !connectStatus.value},
                    modifier = Modifier.size(width = 180.dp, height = 180.dp)) {
+
                        Image(painter = if (connectStatus.value) painterResource(id = R.drawable.ic_baseline_check_circle_24)
                        else painterResource(id = R.drawable.ic_baseline_highlight_off_24),
                            contentDescription = "No connected",
-
                            modifier = Modifier
                                .fillMaxSize()
-                               )
+                       )
                    }
                }
-
            }
-
-
         }
 
 }
@@ -140,7 +140,10 @@ class MongoDB(val dbAdress: String,
     }
 
 
-    fun Connect(dbAdress: String, userName: String, passWord: String, cryptoType: String){
+    fun Connect(dbAdress: String,
+                userName: String,
+                passWord: String,
+                cryptoType: String){
 
 
     }
