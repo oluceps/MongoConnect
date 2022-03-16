@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ourobouse.learnjetpackcompose.ui.theme.LearnJetpackComposeTheme
@@ -41,9 +42,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = Color.White
                 ) {
-                    Column() {
+                    Column {
 
                         MainSurface()
+
+                        InquireCard()
                     }
                 }
             }
@@ -51,7 +54,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun MainSurface(){
     val connectStatus= remember {
@@ -66,8 +69,17 @@ fun MainSurface(){
             ) {
            Row(horizontalArrangement = Arrangement.Start) {
                Column (verticalArrangement = Arrangement.Center,
-               modifier = Modifier.padding(20.dp)){
+               modifier = Modifier
+                   .padding(20.dp)
+                   .defaultMinSize(minWidth = 140.dp)){
+                   fun textCon(status: Boolean) {
+                       if (!status) return "Disconnected"
+                       else "Connected"
+                   }
+
+
                    Text(text = if (!connectStatus.value) "Disconnected" else "Connected",
+
                    Modifier.padding(15.dp))
                    Text(text = "Type:  ${if (!connectStatus.value) "-" else null/*TODO else*/}",
                        Modifier.padding(15.dp))
@@ -76,6 +88,7 @@ fun MainSurface(){
 
                    }
                Column(verticalArrangement = Arrangement.SpaceAround) {
+                   Spacer(modifier = Modifier.height(6.dp))
                    OutlinedButton(onClick = { connectStatus.value = !connectStatus.value},
                    modifier = Modifier.size(width = 180.dp, height = 180.dp)) {
                        Image(painter = if (connectStatus.value) painterResource(id = R.drawable.ic_baseline_check_circle_24)
@@ -83,16 +96,33 @@ fun MainSurface(){
                            contentDescription = "No connected",
 
                            modifier = Modifier
-                               .size(width = 120.dp, height = 120.dp)
+                               .fillMaxSize()
                                )
-
                    }
                }
 
            }
 
+
         }
+
 }
+
+@Preview
+@Composable
+fun InquireCard(){
+    Card(border = ButtonDefaults.outlinedBorder,
+    modifier = Modifier
+        .fillMaxWidth()
+        .padding(20.dp)
+        .height(120.dp)) {
+        Text(text = "test", modifier = Modifier.fillMaxSize())
+
+    }
+}
+
+
+
 
 data class QQleaks(val phone: String, val QQ: String)
 data class Weiboleaks(val Phone: String, val uid: String)
@@ -102,11 +132,14 @@ class MongoDB(val dbAdress: String,
               val passWord: String,
               val cryptoType: String){
 
+    fun connectDB(dbName: String){
+        val client = KMongo.createClient("mongodb://localhost")//get com.mongodb.MongoClient new instance
+        val database = client.getDatabase(dbName) //normal java driver usage
+        val colQQleaks = database.getCollection<QQleaks>() //KMongo extension method
+        val colWeiboLeaks = database.getCollection<Weiboleaks>()
+    }
 
-    val client = KMongo.createClient() //get com.mongodb.MongoClient new instance
-    val database = client.getDatabase("SEL") //normal java driver usage
-    val colQQleaks = database.getCollection<QQleaks>() //KMongo extension method
-    val colWeiboLeaks = database.getCollection<Weiboleaks>()
+
     fun Connect(dbAdress: String, userName: String, passWord: String, cryptoType: String){
 
 
