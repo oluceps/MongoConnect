@@ -3,10 +3,7 @@ package com.ourobouse.learnjetpackcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.indication
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -37,7 +34,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color.White
+                    color = Color(0xFFe2e1e4)
                 ) {
                     Column {
 
@@ -58,7 +55,9 @@ fun MainSurface(){
         mutableStateOf(false)
     }
 
-        Card(border = ButtonDefaults.outlinedBorder,
+        Card(
+            shape = RoundedCornerShape(20.dp),
+            border = ButtonDefaults.outlinedBorder,
 
             modifier = Modifier
                 .fillMaxWidth()
@@ -89,17 +88,17 @@ fun MainSurface(){
 
                    Spacer(modifier = Modifier.height(6.dp))
 
-                   OutlinedButton(onClick = { connectStatus.value = !connectStatus.value},
-                   modifier = Modifier.size(width = 180.dp, height = 180.dp)) {
+                   Image(painter = if (connectStatus.value) painterResource(id = R.drawable.ic_baseline_check_circle_24)
+                   else painterResource(id = R.drawable.ic_baseline_highlight_off_24),
+                       contentDescription = "No connected",
+                       modifier = Modifier
+                           .clickable { connectStatus.value = !connectStatus.value }
+                           .size(width = 180.dp, height = 180.dp)
+                           .clip(shape = RoundedCornerShape(60.dp))
+                   )
 
-                       Image(painter = if (connectStatus.value) painterResource(id = R.drawable.ic_baseline_check_circle_24)
-                       else painterResource(id = R.drawable.ic_baseline_highlight_off_24),
-                           contentDescription = "No connected",
-                           modifier = Modifier
-                               .fillMaxSize()
-                       )
-                   }
                }
+               Spacer(modifier = Modifier.width(20.dp))
            }
         }
 
@@ -109,11 +108,13 @@ fun MainSurface(){
 @Composable
 fun InquireCard(){
     Card(border = ButtonDefaults.outlinedBorder,
+        shape = RoundedCornerShape(20.dp),
     modifier = Modifier
         .fillMaxWidth()
         .padding(20.dp)
-        .height(120.dp)) {
+        .height(140.dp)) {
         Row {
+            Spacer(modifier = Modifier.width(30.dp))
             MongoDB("","","","").qqInputQuery()
 
         }
@@ -149,6 +150,7 @@ class MongoDB(val dbAdress: String,
             var QQ by remember {
                 mutableStateOf("")
             }
+
 
             OutlinedTextField(value = phone, onValueChange = {phone = it}, label = { Text(text = "Phone Number")})
             OutlinedTextField(value = QQ, onValueChange = {QQ = it}, label = {Text(text = "QQ Number")})
