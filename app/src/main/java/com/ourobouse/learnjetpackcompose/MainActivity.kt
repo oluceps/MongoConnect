@@ -3,6 +3,8 @@ package com.ourobouse.learnjetpackcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontSynthesis.Companion.Style
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -109,13 +112,13 @@ fun MainSurface(){
 fun InquireCard(){
     Card(border = ButtonDefaults.outlinedBorder,
         shape = RoundedCornerShape(20.dp),
-    modifier = Modifier
-        .fillMaxWidth()
-        .padding(20.dp)
-        .height(140.dp)) {
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp)
+            .height(140.dp),
+    ) {
         Row {
-            Spacer(modifier = Modifier.width(30.dp))
-            MongoDB("","","","").qqInputQuery()
+            MongoDB("","","","").inputQuery()
 
         }
 
@@ -141,22 +144,55 @@ class MongoDB(val dbAdress: String,
     }
 
 
+    @OptIn(ExperimentalAnimationApi::class)
     @Composable
-    fun qqInputQuery(){
-        Column() {
-            var phone by remember{
-                mutableStateOf("")
-            }
-            var QQ by remember {
-                mutableStateOf("")
-            }
-
-
-            OutlinedTextField(value = phone, onValueChange = {phone = it}, label = { Text(text = "Phone Number")})
-            OutlinedTextField(value = QQ, onValueChange = {QQ = it}, label = {Text(text = "QQ Number")})
-
+    fun inputQuery(){
+        var phone by remember{
+            mutableStateOf("")
+        }
+        var QQ by remember {
+            mutableStateOf("")
+        }
+        var select by remember {
+            mutableStateOf("None")
+        }
+        var expanded by remember {
+            mutableStateOf(false)
         }
 
+        Column(horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()) {
+
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxSize()){
+
+                OutlinedButton(onClick = {/*select = "QQleaks";*/
+                    expanded = !expanded},
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .size(width = 130.dp, height = 100.dp)
+                ) {
+                    Text(text = "QQcol")
+                }
+                OutlinedButton(onClick = {select = "Weiboleaks";
+                    expanded = !expanded },
+                    modifier = Modifier
+                    .padding(20.dp)
+                    .size(width = 130.dp, height = 100.dp)
+                ) {
+                    Text(text = "WeiboCol")
+                }
+
+
+            }
+            AnimatedVisibility(visible = expanded, modifier = Modifier.fillMaxSize()) {
+                Text(text = "test")
+
+            }
+
+        }
 
     }
 
